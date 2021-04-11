@@ -4,11 +4,11 @@ const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
+number.innerText = 0;
+
 const reducer = (count = 0, action) => {
-  console.log(count, action);
   if (action.type === "ADD"){
     return count + 1;
-    // console.log('they are telling me to add one');
   } else if(action.type === "MINUS"){
     return count - 1;
   } else{
@@ -16,15 +16,22 @@ const reducer = (count = 0, action) => {
   }
 };
 
+
 const store = createStore(reducer);
 
+const onChange = () => {
+  number.innerText = store.getState();
+}
 
-store.dispatch({type: "ADD"});
-store.dispatch({type: "ADD"});
-store.dispatch({type: "ADD"});
-store.dispatch({type: "ADD"});
-store.dispatch({type: "ADD"});
-store.dispatch({type: "MINUS"}); 
-// 결과값 4
+store.subscribe(onChange);  // 이 function은 store에 변화가 있을 때마다 감지해서 불려질 거야!
 
-console.log(store.getState());
+const handleAdd = () => {
+  store.dispatch({type: "ADD" });
+}
+
+const handleMinus = () => {
+  store.dispatch({type: "MINUS" });
+}
+
+add.addEventListener("click", handleAdd);
+minus.addEventListener("click", handleMinus);
